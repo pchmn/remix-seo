@@ -18,6 +18,10 @@ function removeTrailingSlash(s: string) {
   return s.endsWith("/") ? s.slice(0, -1) : s;
 }
 
+function removeExtraSlashes(s: string) {
+  return removeTrailingSlash(s).replace(/\/+/g, "/");
+}
+
 async function getSitemapXml(
   request: Request,
   routes: ServerBuild["routes"],
@@ -87,7 +91,7 @@ async function getSitemapXml(
         if (path.includes(":")) return;
         if (id === "root") return;
 
-        const entry: SitemapEntry = { route: removeTrailingSlash(path) };
+        const entry: SitemapEntry = { route: removeExtraSlashes(path) };
         return entry;
       })
     )
